@@ -1,0 +1,5 @@
+# Request
+string size
+---
+# Response
+bool success

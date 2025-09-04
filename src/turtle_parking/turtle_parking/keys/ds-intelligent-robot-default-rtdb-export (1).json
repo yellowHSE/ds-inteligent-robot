@@ -1,0 +1,110 @@
+{
+  "meta": {
+    "seq": {
+      "records": {
+        "20250901": 8,
+        "20250902": 21,
+        "20250903": 1
+      }
+    }
+  },
+  "records": {
+    "REC-20250830-0001": {
+      "created_at_kst": "2025-08-31 14:18:08",
+      "entry_time_kst": "2025-08-31 14:18:08",
+      "id": "REC-20250830-0001",
+      "license_plate": "123가4567",
+      "slot_id": "A-1",
+      "status": "ENTRY",
+      "vehicle_class": "compact"
+    },
+    "REC-20250830-0002": {
+      "created_at_kst": "2025-09-03 08:30:12",
+      "entry_time_kst": "2025-09-03 08:30:12",
+      "exit_in_progress_at": "2025-09-03T11:59:54.797055+00:00",
+      "exit_request_at": "2025-09-03T11:59:54.129Z",
+      "exit_request_ts": 1756900794398,
+      "exited_at": "2025-09-03T12:00:05.156775+00:00",
+      "fare": {
+        "billable_minutes": 744,
+        "billed_units": 75,
+        "calc_at": "2025-09-03T12:00:05.156761+00:00",
+        "currency": "KRW",
+        "duration_minutes": 749,
+        "duration_raw_minutes": 749,
+        "entry_time": "2025-09-03 08:30:12",
+        "grace_minutes": 5,
+        "min_parking_fee": 0,
+        "parking_fee": 75000,
+        "rounding": "ceil",
+        "timestamp_source": "entry_time_kst",
+        "total_fee": 85000,
+        "tz_assumption": "Asia/Seoul",
+        "unit_minutes": 10,
+        "unit_price": 1000,
+        "valet_fee": 10000
+      },
+      "fare_ready": true,
+      "id": "REC-20250830-0002",
+      "license_plate": "381수8717",
+      "slot_id_last": "B-1",
+      "status": "EXIT",
+      "total_fee": 85000,
+      "vehicle_class": "general"
+    },
+    "REC-20250903-0001": {
+      "created_at": "2025-09-02T23:30:22+00:00",
+      "created_at_kst": "2025-09-03 08:30:22",
+      "entry_time": "2025-09-02T23:30:22+00:00",
+      "entry_time_kst": "2025-09-03 08:30:22",
+      "id": "REC-20250903-0001",
+      "license_plate": "114도4628",
+      "slot_id": "A-2",
+      "status": "ENTRY",
+      "vehicle_class": "compact"
+    }
+  },
+  "robot_status": {
+    "robot0": {
+      "battery": 85,
+      "status": false
+    },
+    "robot3": {
+      "battery": 74,
+      "status": false
+    }
+  },
+  "slots": {
+    "A-1": {
+      "class": "compact",
+      "occupied": true,
+      "occupied_by": "12가3456",
+      "pose": {
+        "theta": 0,
+        "x": -2,
+        "y": 0.5
+      }
+    },
+    "A-2": {
+      "class": "compact",
+      "occupied": true,
+      "occupied_by": "114도4628",
+      "pose": {
+        "theta": 0,
+        "x": -2,
+        "y": 1
+      },
+      "updated_at": "2025-09-03T12:34:55.289735+00:00"
+    },
+    "B-1": {
+      "class": "general",
+      "occupied": false,
+      "pose": {
+        "theta": 0,
+        "x": 1,
+        "y": 1.5
+      },
+      "updated_at": "2025-09-03T12:00:05.520551+00:00"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+# Request
+string zone
+---
+# Response: 사람 위치 + 성공 여부
+geometry_msgs/Pose2D person_position
+bool success

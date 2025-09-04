@@ -1,0 +1,107 @@
+{
+  "car_info": {
+    "-OYyLA6n_Usa9ONjA2ET": {
+      "car_class": "unknown",
+      "created_at": "2025-08-31T04:18:02.356Z",
+      "created_at_ts": 1756613882963,
+      "license_plate": "12가3456",
+      "status": "EXIT_REQUESTED"
+    },
+    "-OYyLFgRz0y1hM1QBMiJ": {
+      "car_class": "unknown",
+      "created_at": "2025-08-31T04:18:25.181Z",
+      "created_at_ts": 1756613905403,
+      "license_plate": "12가3456",
+      "status": "EXIT_REQUESTED"
+    }
+  },
+  "records": {
+    "REC-20250830-0001": {
+      "created_at_kst": "2025-08-31 14:18:08",
+      "entry_time_kst": "2025-08-31 14:18:08",
+      "id": "REC-20250830-0001",
+      "license_plate": "12가3456",
+      "slot_id": "A-1",
+      "status": "ENTRY",
+      "vehicle_class": "compact"
+    },
+    "REC-20250830-0002": {
+      "created_at_kst": "2025-08-31 17:30:12",
+      "entry_time_kst": "2025-08-31 17:30:12",
+      "id": "REC-20250830-0002",
+      "license_plate": "35나5678",
+      "slot_id": "B-1",
+      "status": "ENTRY",
+      "vehicle_class": "general"
+    }
+  },
+  "robot_status": {
+    "robot0": {
+      "battery": 30,
+      "status": true
+    },
+    "robot3": {
+      "battery": 50,
+      "status": false
+    }
+  },
+  "slots": {
+    "A-1": {
+      "class": "compact",
+      "occupied": true,
+      "occupied_by": "12가3456",
+      "pose": {
+        "theta": 0,
+        "x": -2,
+        "y": 0.5
+      }
+    },
+    "A-2": {
+      "class": "compact",
+      "occupied": false,
+      "pose": {
+        "theta": 0,
+        "x": -2,
+        "y": 1
+      }
+    },
+    "B-1": {
+      "class": "general",
+      "occupied": true,
+      "occupied_by": "35나5678",
+      "pose": {
+        "theta": 0,
+        "x": -0.5,
+        "y": 1.2
+      }
+    },
+    "B-2": {
+      "class": "general",
+      "occupied": false,
+      "pose": {
+        "theta": 0,
+        "x": -0.2,
+        "y": 1.5
+      }
+    },
+    "C-1": {
+      "class": "general",
+      "occupied": true,
+      "occupied_by": "12가3456",
+      "pose": {
+        "theta": 0,
+        "x": 1,
+        "y": 1.2
+      }
+    },
+    "C-2": {
+      "class": "general",
+      "occupied": false,
+      "pose": {
+        "theta": 0,
+        "x": 1,
+        "y": 1.5
+      }
+    }
+  }
+}

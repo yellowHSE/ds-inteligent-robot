@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>무인 주차장 실시간 대시보드</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- 표 가독성 향상 -->
+  <style>
+    /* 표 전체를 고정 레이아웃으로: colgroup 폭을 정확히 반영 */
+    .table table { table-layout: fixed; width: 100%; }
+    /* 줄바꿈 금지 + 길면 말줄임 */
+    .table th, .table td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* 숫자 정렬 깔끔하게 */
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .center { text-align: center; }
+  </style>
+
+  <!-- 로봇 상태(좌측) 경량 스타일 -->
+  <style>
+    .robots-card { margin-top: 12px; }
+    .robots-card .muted { margin-bottom: 6px; }
+    .robot-list { display: flex; flex-direction: column; gap: 8px; }
+    .robot-row { display: grid; grid-template-columns: auto 72px 1fr; gap: 10px; align-items: center; }
+    .robot-name { font-family: ui-monospace, Menlo, monospace; color: #c7d1e0; }
+    .robot-pill { justify-self: end; }
+    .robot-batt { display: flex; align-items: center; gap: 8px; }
+    .bbar { position: relative; flex: 1; height: 8px; background:#1f2534; border-radius: 999px; overflow: hidden; }
+    .bbar > .fill { position:absolute; inset:0 auto 0 0; width:0%; background:#27c093; }
+    .bbar.low > .fill { background:#ef6a6a; }
+    .bpct { width: 40px; text-align: right; color:#c7d1e0; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>무인 주차장 실시간 대시보드 <span class="subtitle">(Doosan ROKEY 4)</span></h1>
+    <div class="subtitle">실시간 운영 지표</div>
+  </header>
+
+  <main>
+    <!-- LEFT -->
+    <section class="card left">
+      <div class="controls"> … </div>
+
+      <div class="stats sidebar-stats">
+        <div class="stat">
+          <h3>업데이트</h3>
+          <div class="v" id="statUpdated">-</div>
+        </div>
+      </div>
+
+      <!-- 로봇 상태 -->
+      <div class="robots-card">
+        <div class="muted">로봇 상태</div>
+        <div id="robotList" class="robot-list"></div>
+      </div>
+    </section>
+
+    <!-- RIGHT -->
+    <section class="right">
+      <div class="card slot-card">
+        <div class="muted">슬롯 맵</div>
+        <div class="slot-grid">
+          <canvas id="slotMap" width="640" height="420"></canvas>
+          <div class="charts-right">
+            <div class="chart-card">
+              <div class="muted small">점유 현황</div>
+              <canvas id="pieOverall" width="300" height="180"></canvas>
+            </div>
+            <div class="chart-card">
+              <div class="muted small">클래스별 빈 슬롯</div>
+              <canvas id="barByClass" width="300" height="200"></canvas>
+            </div>
+            <div class="mini-stats">
+              <div class="stat"><h3>총 슬롯</h3><div class="v" id="statTotal">0</div></div>
+              <div class="stat"><h3>빈 슬롯</h3><div class="v" id="statEmpty">0</div></div>
+              <div class="stat"><h3>점유 슬롯</h3><div class="v" id="statOccupied">0</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- 최근 입·출차 -->
+        <div class="card table">
+          <div class="muted">최근 입·출차</div>
+          <div class="scroll">
+            <table id="carinfoTable">
+              <!-- ✅ 열 폭 지정 -->
+              <colgroup>
+                <col style="width: 150px" /> <!-- 시각 -->
+                <col style="width: 110px" /> <!-- 차량 번호 -->
+                <col style="width: 80px"  /> <!-- 차종 -->
+                <col style="width: 90px"  /> <!-- 상태 -->
+                <col style="width: 70px"  /> <!-- 슬롯 -->
+                <col style="width: 110px" /> <!-- 총 요금 -->
+                <col style="width: 100px" /> <!-- 주차비 -->
+                <col style="width: 90px"  /> <!-- 발렛 -->
+                <col style="width: 110px" /> <!-- 과금 단위수 -->
+                <col style="width: 120px" /> <!-- 이용 시간(분) -->
+                <col style="width: 160px" /> <!-- 기록 ID -->
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>시각</th>
+                  <th>차량 번호</th>
+                  <th>차종</th>
+                  <th>상태</th>
+                  <th>슬롯</th>
+                  <th class="center">총 요금</th>
+                  <th class="center">주차비</th>
+                  <th class="center">발렛</th>
+                  <th class="center">과금 단위수</th>
+                  <th class="center">이용 시간(분)</th>
+                  <th>기록 ID</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 슬롯 목록 -->
+        <div class="card table">
+          <div class="muted">슬롯 목록</div>
+          <div class="scroll">
+            <table id="slotsTable">
+              <!-- ✅ 열 폭 지정 -->
+              <colgroup>
+                <col style="width: 90px"  /> <!-- 슬롯 ID -->
+                <col style="width: 100px" /> <!-- 클래스 -->
+                <col style="width: 100px" /> <!-- 상태 -->
+                <col style="width: 140px" /> <!-- 차량 번호 -->
+              </colgroup>
+              <thead>
+                <tr>
+                  <th data-sort="slot_id">슬롯 ID</th>
+                  <th data-sort="class">클래스</th>
+                  <th data-sort="occupied">상태</th>
+                  <th>차량 번호</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- app.js가 firebase-config.js를 import -->
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

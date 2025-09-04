@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+  <title>출차 요청 | Smart Parking</title>
+  <link rel="stylesheet" href="assets/css/customer.css"/>
+  <style>
+    .hidden{display:none}
+    .result .kvs .row{display:flex;justify-content:space-between;gap:12px;margin:6px 0}
+    .result .kvs .k{color:#9fb0c2}
+    .result .kvs .v{font-weight:600}
+    .fare-total{font-size:20px;font-weight:800}
+    .row.btns{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .muted.small{font-size:12px;opacity:.85}
+    .waiting{display:flex;align-items:center;gap:8px}
+    .dot{width:6px;height:6px;border-radius:50%;background:#9fb0c2;opacity:.5;animation:blink 1.2s infinite}
+    .dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+    @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <h1>출차 요청</h1>
+    <p class="muted">차량 번호를 입력해 출차를 요청하세요.</p>
+  </header>
+
+  <main class="container">
+    <!-- 입력 폼 -->
+    <form id="exitForm" class="card">
+      <label for="plate" class="label">차량 번호</label>
+      <input
+        id="plate" name="plate" type="text" inputmode="text"
+        placeholder="예: 123가4567" autocomplete="off" maxlength="16"
+        class="input" required
+      />
+      <div class="row">
+        <button id="submitBtn" type="submit" class="btn primary">출차 요청</button>
+      </div>
+      <p class="help muted">요청 후 정산이 완료되면 금액이 자동으로 표시됩니다.</p>
+    </form>
+
+    <!-- 접수/대기 -->
+    <section id="result" class="card result hidden">
+      <h2 class="ok">요청이 접수되었습니다.</h2>
+      <div class="kvs">
+        <div class="row"><span class="k">요청 ID</span><span class="v" id="reqId">-</span></div>
+        <div class="row"><span class="k">차량 번호</span><span class="v" id="reqPlate">-</span></div>
+        <div class="row"><span class="k">요청 시각</span><span class="v" id="reqTime">-</span></div>
+        <div class="waiting muted small">
+          <span id="waitText">정산 내역을 준비 중…</span>
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        </div>
+      </div>
+      <div class="row btns">
+        <button id="newBtn" class="btn">다른 차량 요청</button>
+      </div>
+    </section>
+
+    <!-- 정산 안내(인라인 카드) -->
+    <section id="fareBox" class="card result hidden">
+      <h2 class="ok">정산 안내</h2>
+      <div class="kvs">
+        <div class="row" style="border-top:1px solid #2a3242;padding-top:10px;margin-top:6px;">
+          <span class="k">총 결제 금액</span>
+          <span class="v fare-total" id="fareTotal">-</span>
+        </div>
+        <div class="row"><span class="k">계산식</span><span class="v" id="fareFormula">-</span></div>
+
+        <div class="row"><span class="k">요청 ID</span><span class="v" id="fareRecId">-</span></div>
+        <div class="row"><span class="k">차량 번호</span><span class="v" id="farePlate">-</span></div>
+        <div class="row"><span class="k">진입 시각</span><span class="v" id="fareEntryTime">-</span></div>
+        <div class="row"><span class="k">총 주차 시간</span><span class="v" id="fareDuration">-</span></div>
+        <div class="row"><span class="k">무료 유예</span><span class="v" id="fareGrace">-</span></div>
+        <div class="row"><span class="k">과금 분</span><span class="v" id="fareBillable">-</span></div>
+        <div class="row"><span class="k">과금 단위</span><span class="v" id="fareUnit">-</span></div>
+        <div class="row"><span class="k">단위 요금</span><span class="v" id="fareUnitPrice">-</span></div>
+        <div class="row"><span class="k">부과 단위 수</span><span class="v" id="fareUnits">-</span></div>
+        <div class="row"><span class="k">주차비</span><span class="v" id="fareParking">-</span></div>
+        <div class="row"><span class="k">발렛 기본금</span><span class="v" id="fareValet">-</span></div>
+      </div>
+      <div class="row btns">
+        <button id="fareDoneBtn" class="btn primary">확인</button>
+        <button id="fareNewBtn" class="btn">다른 차량 요청</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer muted">Powered by Firebase RTDB · 모바일 최적화</footer>
+
+  <script type="module" src="assets/js/firebase-config.js?v=exit-no-note"></script>
+  <script type="module" src="assets/js/customer.js?v=exit-no-note"></script>
+</body>
+</html>

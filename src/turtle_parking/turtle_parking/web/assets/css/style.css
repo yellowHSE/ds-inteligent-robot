@@ -1,0 +1,106 @@
+:root { --bg:#0f1115; --card:#151923; --muted:#8b97a7; --text:#e8eef7; --accent:#8ab4ff; --ok:#27c093; --bad:#ef6a6a; }
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);color:var(--text)}
+header{padding:20px 24px;border-bottom:1px solid #1e2430;position:sticky;top:0;background:#0f1115cc;backdrop-filter:blur(6px)}
+h1{margin:0 0 6px 0;font-size:20px}
+.subtitle{color:var(--muted);font-size:13px}
+
+/* 메인 2열 */
+main{padding:20px;display:grid;grid-template-columns:360px 1fr;gap:16px}
+
+/* 카드 공통 */
+.card{background:var(--card);border:1px solid #1d2330;border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.inner{padding:10px}
+
+/* 왼쪽 컨트롤 */
+.left .controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:end}
+.left .controls label{font-size:12px;color:var(--muted)}
+.left .controls input,.left .controls select,.left .controls button{padding:8px 10px;border-radius:10px;border:1px solid #2a3751;background:#0f131c;color:var(--text);font-size:13px}
+.left .controls button{background:linear-gradient(180deg,#2a5bd7,#244db6);border:none;font-weight:600;cursor:pointer}
+.left .controls .secondary{background:#0f131c;border:1px solid #2a3751}
+
+/* 통계 타일 */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.stat{background:#0f131c;border:1px solid #20283a;border-radius:12px;padding:10px}
+.stat h3{margin:0;font-size:12px;color:var(--muted)}
+.stat .v{font-size:20px;margin-top:6px;font-weight:700}
+
+/* 오른쪽 표 2열 */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* 표 */
+.table .scroll{max-height:420px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:10px 8px;border-bottom:1px solid #20283a;text-align:left}
+th{color:#98a5ba;font-weight:600;cursor:pointer}
+tr:hover{background:#101521}
+.pill{padding:2px 8px;border-radius:999px;font-size:12px;display:inline-block;border:1px solid #2a3751}
+.ok{background:rgba(39,192,147,.12);color:#72ffd5;border-color:rgba(39,192,147,.35)}
+.warn{background:rgba(239,106,106,.12);color:#ffb4b4;border-color:rgba(239,106,106,.35)}
+
+/* 푸터 */
+footer{padding:16px 24px;color:#6b778a;font-size:12px;border-top:1px solid #1e2430;margin-top:10px}
+
+/* 캔버스 공통 */
+canvas{background:#0b0e14;border:1px solid #1f2534;border-radius:12px}
+
+/* 업데이트 타일 글꼴 조정 */
+#statUpdated { font-size:13px; line-height:1.2; white-space:normal; }
+
+/* ─── Slot Map + 우측 차트 고정 패널 ─── */
+/* ── 기존 .slot-card .slot-grid 를 다음으로 교체 ── */
+.slot-card .slot-grid{
+  display:grid;
+  grid-template-columns: 0.8fr auto;   /* ← 왼쪽이 남는 공간 전부 사용 */
+  gap:16px;
+  align-items:start;
+}
+
+/* ── 기존 .charts-right 를 다음으로 교체 ── */
+.charts-right{
+  width: clamp(420px, 32vw, 820px);  /* 최소 360px, 보통 26vw, 최대 560px */
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+#slotMap{
+  width:100% !important;      /* 부모(왼쪽 컬럼) 가로를 가득 사용 */
+  height:auto !important;     /* 비율 유지한 채 CSS 스케일 */
+  max-height: 460px;          /* 너무 커지지 않게 상한 */
+}
+
+/* 카드와 캔버스: 컨테이너가 커지면 함께 커지도록 */
+.chart-card{
+  background:#0b0e14;
+  border:1px solid #1f2534;
+  border-radius:12px;
+  padding:8px;
+  min-height: 280px;          /* ← 세로 길이 확보 */
+  display:flex;
+  flex-direction:column;
+}
+
+.chart-card canvas{
+  width:100% !important;
+  height: 240px !important;   /* ← Chart.js가 이 높이를 그대로 사용 */
+  max-height:none;
+}
+
+
+/* 초대형 화면에서 파이:막대 2열(60:40)로 전환 */
+@media (min-width: 1800px){
+  .charts-right{
+    /* display:grid;
+    grid-template-columns: 1fr 1.3fr;   /* 60:40 */
+    /* gap:16px;
+    width: clamp(420px, 28vw, 620px);   더 넓게 */
+    display:grid;                       /* 파이 | 바 가로 2열 */
+    grid-template-columns: 1fr 1.6fr;   /* 파이:바 = 1 : 1.6  (바 더 넓게) */
+    gap:16px;
+    /* 초대형 화면에서는 더 크게 키움 */
+    width: clamp(520px, 36vw, 960px);
+  }
+}
+
+.muted.small{ font-size:12px; color:var(--muted); }
